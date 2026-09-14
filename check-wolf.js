@@ -232,7 +232,7 @@ async function connectUsingChromeProfile(
         token;
 
     service.config.framework.login.onlineState =
-        OnlineState.INVISIBLE;
+        OnlineState.BUSY;
 
     if (appCheckToken) {
 

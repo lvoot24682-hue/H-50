@@ -10,8 +10,8 @@ const { WOLF, OnlineState } = wolfjs;
 
 // ==================== ⚙️ البيانات الثابتة (عدّل حسب حاجتك) ====================
 const settings = {
-    targetBotId: 51660277,
-    actionWord: "!صيد 3",
+    targetBotId: 39369782,
+    actionWord: "!اسرق 5",
     delayBetweenHeists: 11000,      // 11 ثانية فاصل بين الصيد
     workDuration: 54 * 60 * 1000,   // 54 دقيقة عمل
     restDuration: 6 * 60 * 1000     // 6 دقائق راحة

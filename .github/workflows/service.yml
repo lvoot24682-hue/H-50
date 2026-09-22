@@ -1,8 +1,6 @@
 name: WOLF Event Bot
 
 on:
-  schedule:
-    - cron: "0 */4 * * *"
   workflow_dispatch:
 
 concurrency:
@@ -12,7 +10,7 @@ concurrency:
 jobs:
   wolf:
     runs-on: ubuntu-latest
-    timeout-minutes: 330
+    timeout-minutes: 360
 
     steps:
       # ======================================================
@@ -31,7 +29,7 @@ jobs:
           cache: "npm"
 
       # ======================================================
-      # Install Dependencies (بدون Playwright)
+      # Install Dependencies
       # ======================================================
       - name: Install dependencies
         run: |
@@ -40,7 +38,7 @@ jobs:
           echo "✅ Dependencies installed"
 
       # ======================================================
-      # التحقق من WOLF_TOKENS_PAT
+      # Verify WOLF_TOKENS_PAT
       # ======================================================
       - name: Verify WOLF_TOKENS_PAT
         env:
@@ -58,10 +56,10 @@ jobs:
             "https://api.github.com/repos/anaayaar-ops/ono/contents/tokens.json")
 
           if [ "$STATUS" != "200" ]; then
-            echo "❌ Failed to access too/tokens.json: HTTP $STATUS"
+            echo "❌ Failed to access tokens.json: HTTP $STATUS"
             exit 1
           fi
-          echo "✅ Access to too/tokens.json confirmed"
+          echo "✅ Access to tokens.json confirmed"
 
       # ======================================================
       # Run Bot
@@ -71,7 +69,7 @@ jobs:
           WOLF_TOKENS_PAT: ${{ secrets.WOLF_TOKENS_PAT }}
         run: |
           echo "========================================"
-          echo "🐺 WOLF EVENT BOT (tokens from anaayaar-ops/too)"
+          echo "🐺 WOLF EVENT BOT"
           echo "========================================"
           echo "🕐 Start: $(date -u)"
           echo "========================================"
@@ -128,44 +126,14 @@ jobs:
       - name: Final Cleanup
         if: always()
         run: |
-          echo "🧹 FINAL CLEANUP"
-          pkill -TERM -f "node check-wolf.js" 2>/dev/null || true
-          sleep 2
-          pkill -KILL -f "node check-wolf.js" 2>/dev/null || true
-          echo "✅ Final cleanup completed"            echo "✅ WOLF EVENT TASK COMPLETED"
-            echo "🎯 تم تنفيذ المهمة بنجاح"
-          else
-            echo "❌ WOLF EVENT TASK FAILED"
-            echo "Exit code: $EXIT_CODE"
-          fi
-
-          echo "🕐 End: $(date)"
-
-          echo "========================================"
-
-          exit "$EXIT_CODE"
-
-      # ======================================================
-      # Cleanup
-      # ======================================================
-
-      - name: Final Cleanup
-        if: always()
-        run: |
           echo ""
           echo "========================================"
           echo "🧹 FINAL CLEANUP"
           echo "========================================"
 
-          echo "🛑 التأكد من عدم وجود WOLF process..."
-
           pkill -TERM -f "node check-wolf.js" 2>/dev/null || true
-
           sleep 2
-
           pkill -KILL -f "node check-wolf.js" 2>/dev/null || true
 
-          echo ""
           echo "✅ Final cleanup completed"
-
           echo "========================================"
